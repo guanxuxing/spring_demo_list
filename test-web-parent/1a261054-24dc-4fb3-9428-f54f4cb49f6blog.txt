@@ -1,0 +1,4 @@
+十二月 23, 2017 1:48:16 下午 thread.TestClass main
+信息: 日志测试two
+十二月 23, 2017 1:48:16 下午 thread.TestClass main
+信息: 日志测试one

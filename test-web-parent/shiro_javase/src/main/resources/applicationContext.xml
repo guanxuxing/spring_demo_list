@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="com.javase.shiro" >
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"></context:exclude-filter>
+    </context:component-scan>
+
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <!--配置一个realm-->
+       <!-- <property name="realm" ref="ShiroRealm"/>-->
+        <property name="authenticator" ref="modularRealmAuthenticator" />
+        <property name="authorizer" ref="modularRealmAuthorizer" />
+    </bean>
+
+    <!--配置一个realm-->
+    <bean id="ShiroRealm" class="com.javase.shiro.controller.realm.JdbcRealm" ></bean>
+    <!-- 配置一个认证器 可以配置多个realm -->
+    <bean id="modularRealmAuthenticator" class="org.apache.shiro.authc.pam.ModularRealmAuthenticator">
+        <property name="realms">
+            <list>
+                <ref bean="ShiroRealm" />
+            </list>
+        </property>
+    </bean>
+
+   <!-- 配置角色认证-->
+    <bean id="modularRealmAuthorizer" class="org.apache.shiro.authz.ModularRealmAuthorizer">
+        <property name="realms">
+            <list>
+                <ref bean="ShiroRealm" />
+            </list>
+        </property>
+    </bean>
+
+    <!-- 启动shiro注解 -->
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <property name="loginUrl" value="/login.jsp"/>
+        <property name="successUrl" value="/success.jsp"/>
+        <property name="unauthorizedUrl" value="/reg.jsp"/>
+        <property name="filterChainDefinitions">
+            <value>
+                /logon = anon   <!-- //任何用户发送的请求都能够访问-->
+                /admin.jsp = roles[admin]
+                /user.jsp = roles[user]
+                /** = authc   <!--经过认证的请求可访问，否则将会将请求重定向到 ini 配置文件配置的 authc.loginUrl 资源，进行认证操作-->
+            </value>
+        </property>
+    </bean>
+
+</beans>

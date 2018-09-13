@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>${title}</title>
+</head>
+<body>
+
+模板测试,姓名： ${name}
+<hr/>
+<a href="">连接</a>
+<#----时间： ${date?string("yyyy-MM-dd HH:mm:ss")}-->
+
+
+</body>
+</html>
