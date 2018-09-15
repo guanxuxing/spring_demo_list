@@ -1,0 +1,6 @@
+app : springMvc 基础配置
+shiro_javaee : shiro java demo测试
+shiro_javase : spring shiro 整合 , 权限控制(注解)
+spring-freemarker : springMvc + ftl
+web-socket : webScoket demo
+mvc : 单点登录(single sign-on) [redis]
